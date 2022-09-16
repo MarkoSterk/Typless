@@ -30,15 +30,19 @@ def catchError():
       try:
          return f(*args,**kwargs)
       except Exception as e:
-        if isinstance(e, HTTPException):
-            return AppError(e.description, e.code, 'error')
-        return AppError('Something went wrong', 500, 'error')
+        return error_response(e)
     return applicator
   return decorate
 
 
-def route_not_found(e):
+def error_response(e):
+    if isinstance(e, HTTPException):
+      if request.path.startswith('/api/'):
+          ##return JSON response if request was made to the API endpoints
+          return AppError(e.description, e.code, 'error')
+      return render_template('public/error.html', error=e)
+    
     if request.path.startswith('/api/'):
-        ##return JSON response
-        return AppError(e.description, e.code, 'error')
+      return AppError(e.description, e.code, 'error')
+    e = {'name': 'Internal server error', 'description': 'Something went wrong', 'code': 500}
     return render_template('public/error.html', error=e)

@@ -13,6 +13,7 @@ from app.models.data import Data
 def process_data():
     file = request.files['file']
     file_name = file.filename
+
     base64_data = base64.b64encode(file.read()).decode('utf-8')
     file_name = file.filename
 
