@@ -2,13 +2,14 @@ import { removeSpinner, renderSpinner, flashMessage } from "./utilFuncs.js";
 import { showPreview } from "./formUtils.js";
 
 export const sendPdf = async (email, formData, parentDiv, PROCESS_API_URL, processInvoiceBtn, saveDataBtn, resetFormBtn, flashMsg) => {
-    if(email.value.length > 4){
+  //primitive email validation  
+  if((email.value.length > 4) && (email.value.includes('@') && (email.value.includes('.')))){
         formData.append('email', email.value)
     }
     else {
         return flashMessage('Please insert a valid email address', 'danger', flashMsg)
     }
-
+    //checks if file was uploaded
     if(!formData.has('file')){
         return flashMessage('Please upload a valid invoice first!', 'danger', flashMsg)
     }
