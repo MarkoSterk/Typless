@@ -42,7 +42,7 @@ def error_response(e):
           return AppError(e.description, e.code, 'error')
       return render_template('public/error.html', error=e)
     
-    if request.path.startswith('/api/'):
-      return AppError(e.description, e.code, 'error')
     e = {'name': 'Internal server error', 'description': 'Something went wrong', 'code': 500}
+    if request.path.startswith('/api/'):
+      return AppError(e['description'], e['code'], 'error')
     return render_template('public/error.html', error=e)
