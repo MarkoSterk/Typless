@@ -7,6 +7,8 @@ from app.controllers.errorController import AppError, catchError
 from app.models.data import Data
 
 
+###controller for processing pdf files 
+# and communication with the Typless API
 @catchError()
 def process_data():
     file = request.files['file']
@@ -39,6 +41,7 @@ def process_data():
     }), 200
 
 
+##saves data to the local db
 @catchError()
 def save_data():
     data = request.get_json()
@@ -55,6 +58,7 @@ def save_data():
     }), 201
 
 
+##retrives all data from local db
 @catchError()
 def get_data_all():
     query = Data.query.all()
@@ -71,6 +75,7 @@ def get_data_all():
     }), 200
 
 
+#retrives one record with id
 @catchError()
 def get_data_one(id: int):
     query = Data.query.get(id)
@@ -83,6 +88,8 @@ def get_data_one(id: int):
         'message': 'Query completed successfully'
     }), 200
 
+
+#deletes record with id
 @catchError()
 def delete_data_one(id: int):
     query = Data.query.get(id)

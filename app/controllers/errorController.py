@@ -6,7 +6,10 @@ Error handling controllers.
 
 AppError <- controller for raising/returning predictable app errors
 
-handle_error: overrides the default error responses for all exception codes.
+catchError <- catches unexpected/breaking errors and returns error message.
+
+route_not_found <- if a non-existing endpoint is hit this controller is triggered 
+                    (seperates between API and public routes)
 """
 
 ##function for raising exceptions when needed.
@@ -18,6 +21,7 @@ def AppError(msg, statusCode: int, error: str = 'Error'):
         })
     response = make_response(response)
     return response, statusCode
+
 
 ##try-except "watcher" function
 def catchError():
