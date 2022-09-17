@@ -25,7 +25,7 @@ If not satisfied, you can reset the form with the reset button.
 
 ## SQLite database
 All processed data gets saved into a local SQLite DB. If you download/clone the repo you will get a copy of the DB with some test entries.
-If you wish, you can delete the "site.db" file and start a new one. You can do that by delete the file and uncommenting this section of code
+If you wish, you can delete the "site.db" file and start a new one. You can do that by deleting the file and uncommenting this section of code
 in the __init__.py file in the "app" directory.
 
 ```
