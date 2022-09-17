@@ -21,17 +21,17 @@ The API endpoints are:
                                     email field and a single .pdf file (invoice). Returns a 200 status code
                                     with the processed data from Typless as JSON
 
-2. [POST] "api/v1/data/save"; excepts a POST request with JSON payload with the retuned data from the Typless API.
+2. [POST] "/api/v1/data/save"; excepts a POST request with JSON payload with the retuned data from the Typless API.
                                 Returns a 201 status code (created) along with a JSON response containing the data and additional
                                 status related info.
 
-3. [GET] "api/v1/data/get_all"; GET request which returns ALL saved records in the local SQLite DB. Returns a 200 status code
+3. [GET] "/api/v1/data/get_all"; GET request which returns ALL saved records in the local SQLite DB. Returns a 200 status code
                                 along with JSON data containing the records and some additional info.
 
-4. [GET] "api/v1/data/get/<int:id>; GET request which returns ONE saved record with the provided ID.
+4. [GET] "/api/v1/data/get/<int:id>; GET request which returns ONE saved record with the provided ID.
                                     Returns a 200 status code along with JSON data containing the requested record and some additional info.
 
-5. [DELETE] "api/v1/data/delete/<int:id>; DELETE request which deletes ONE saved record with the provided ID.
+5. [DELETE] "/api/v1/data/delete/<int:id>; DELETE request which deletes ONE saved record with the provided ID.
                                             Returns a 204 status code (no content).
 
 ## Interface info
