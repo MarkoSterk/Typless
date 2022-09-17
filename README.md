@@ -61,4 +61,7 @@ You can create a Typless account on https://app.typless.com
 After registration you can follow the documentation on https://docs.typless.com on how to get your API key,
 setup a document and train the model.
 
+## Additional information
+For any additional info visit https://typless.si website or the documentation page at https://docs.typless.com
+
 Enjoy!
