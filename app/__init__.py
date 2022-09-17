@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.exceptions import default_exceptions
 
 from app.config import Config
 from app.controllers.errorController import error_response
@@ -27,7 +28,8 @@ def create_app(config_class: object=Config):
     from app.routes.apiRoutes import apiRoutes
     app.register_blueprint(apiRoutes)
 
-    app.register_error_handler(404, error_response)
+    for ex in default_exceptions:
+        app.register_error_handler(ex, error_response)
 
     return app
     
