@@ -1,4 +1,4 @@
-from flask import (jsonify, make_response, render_template, request)
+from flask import (jsonify, make_response, render_template, request, Response)
 from werkzeug.exceptions import HTTPException
 
 """
@@ -8,12 +8,12 @@ AppError <- controller for raising/returning predictable app errors
 
 catchError <- catches unexpected/breaking errors and returns error message.
 
-route_not_found <- if a non-existing endpoint is hit this controller is triggered 
+error_response <- sends response if any kind of error is encountered 
                     (seperates between API and public routes)
 """
 
 ##function for raising exceptions when needed.
-def AppError(msg, statusCode: int, error: str = 'Error'):
+def AppError(msg: str, statusCode: int, error: str = 'Error') -> Response:
     response = jsonify({
         'status': error,
         'message': msg,
@@ -25,6 +25,9 @@ def AppError(msg, statusCode: int, error: str = 'Error'):
 
 ##try-except "watcher" function
 def catchError():
+  '''
+  Catches all expected and unexpected errors in the app.
+  '''
   def decorate(f):
     def applicator(*args, **kwargs):
       try:
@@ -35,7 +38,7 @@ def catchError():
   return decorate
 
 
-def error_response(e):
+def error_response(e: Exception) -> Response:
     if isinstance(e, HTTPException):
       if request.path.startswith('/api/'):
           ##return JSON response if request was made to the API endpoints

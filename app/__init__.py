@@ -14,9 +14,20 @@ db = SQLAlchemy() ##SQLalchemy instance for database connection and functionalit
 compress = Compress() ##uses default settings
 
 def create_app(config_class: object=Config):
+    '''
+    Takes a config object with app configurations.
+
+    Creates Flask instance with provided configurations.
+
+    Registers all Flask extensions, error handlers and blueprints.
+
+    Returns FLask app instance.
+    '''
+    #Instatiates and configures Flask instance
     app=Flask(__name__)
     app.config.from_object(config_class)
 
+    #Initializes all app extensions/modules
     db.init_app(app)
     compress.init_app(app)
 
@@ -25,6 +36,8 @@ def create_app(config_class: object=Config):
     # with app.app_context():
     #     db.create_all()
 
+
+    #imports and registers blueprints
     from app.routes.publicRoutes import publicRoutes
     app.register_blueprint(publicRoutes)
 
@@ -32,6 +45,7 @@ def create_app(config_class: object=Config):
     app.register_blueprint(apiRoutes)
 
     for ex in default_exceptions:
+        #Registers the error_response function for all default exceptions.
         app.register_error_handler(ex, error_response)
 
     return app

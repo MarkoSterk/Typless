@@ -1,4 +1,4 @@
-from flask import current_app, request, jsonify
+from flask import current_app, request, jsonify, Response
 import json
 import requests
 import base64
@@ -10,7 +10,17 @@ from app.models.data import Data
 ###controller for processing pdf files 
 # and communication with the Typless API
 @catchError()
-def process_data():
+def process_data() -> Response:
+    '''
+    Requires a valid form submission with a (.pdf) file and email address.
+
+    Creates a base64 file string and makes a POST request to the Typless API.
+
+    Upon successfull processing of the pdf file by Typless
+    a JSON response is generated and returned.
+
+    Additional requirements: Typless API URL, and Typless API Key.
+    '''
     file = request.files['file']
     file_name = file.filename
 
@@ -44,7 +54,13 @@ def process_data():
 
 ##saves data to the local db
 @catchError()
-def save_data():
+def save_data() -> Response:
+    '''
+    Accepts a POST request with a JSON payload.
+    Payload must contain the extracted_fields field (extracted invoice data) and customer field (email address)
+    Creates a new database entry with the Data object and submits it to the database.
+    Returns a JSON response.
+    '''
     data = request.get_json()
     data_string = json.dumps(data['extracted_fields'])
     db_data = Data(email=data['customer'], data=data_string)
@@ -61,7 +77,14 @@ def save_data():
 
 ##retrives all data from local db
 @catchError()
-def get_data_all():
+def get_data_all() -> Response:
+    '''
+    Queries the databse for ALL recorda.
+    If no records are found it returns an AppError with 404 "No data found".
+
+    If query is not empty it returns a JSON response with the queried data.
+    
+    '''
     query = Data.query.all()
     if query is None:
         return AppError('No data found.', 404, 'error')
@@ -78,7 +101,16 @@ def get_data_all():
 
 #retrives one record with id
 @catchError()
-def get_data_one(id: int):
+def get_data_one(id: int) -> Response:
+    '''
+    Requires one positional argument:
+        id: int
+    
+    Queries the database for a record with the provided id.
+    If no record is found it returns an AppError with 404, "Record with this id does not exist"
+
+    If record is found a JSON response is returned.
+    '''
     query = Data.query.get(id)
     if query is None:
         return AppError('Record with this id does not exists', 404, 'error')
@@ -92,7 +124,16 @@ def get_data_one(id: int):
 
 #deletes record with id
 @catchError()
-def delete_data_one(id: int):
+def delete_data_one(id: int) -> Response:
+    '''
+    Requires one positional argument:
+        id: int
+
+    Queries the database for a record with the provided id.
+    If no record is found an AppError is returned with 404 "Record with this id does not exist"
+
+    If record if found it is deleted from the database and a 204 (NO CONTENT) response is returned.
+    '''
     query = Data.query.get(id)
     if query is None:
         return AppError('Record with this id does not exists', 404, 'error')
