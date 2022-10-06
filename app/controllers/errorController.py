@@ -43,9 +43,9 @@ def error_response(e: Exception) -> Response:
       if request.path.startswith('/api/'):
           ##return JSON response if request was made to the API endpoints
           return AppError(e.description, e.code, 'error')
-      return render_template('public/error.html', error=e)
-    
+      return render_template('public/error.html', error=e), e.code
+
     e = {'name': 'Internal server error', 'description': 'Something went wrong', 'code': 500}
     if request.path.startswith('/api/'):
       return AppError(e['description'], e['code'], 'error')
-    return render_template('public/error.html', error=e)
+    return render_template('public/error.html', error=e), e.code

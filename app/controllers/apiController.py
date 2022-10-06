@@ -25,7 +25,6 @@ def process_data() -> Response:
     file_name = file.filename
 
     base64_data = base64.b64encode(file.read()).decode('utf-8')
-    file_name = file.filename
 
     url = current_app.config["TYPLESS_URL"]
     API_KEY = current_app.config["TYPLESS_API_KEY"]
